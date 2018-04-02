@@ -14,6 +14,8 @@ pipeline {
             steps {
                 sh "set"
                 sh "uname -a"
+                sh "echo test1"
+                sh "echo test1 2"
             }
         }
     }
