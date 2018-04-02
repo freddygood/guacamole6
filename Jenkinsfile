@@ -16,6 +16,7 @@ pipeline {
                 sh "uname -a"
                 sh "echo test1"
                 sh "echo test1 2"
+                sh "echo test3 3"
             }
         }
     }
