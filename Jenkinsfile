@@ -17,7 +17,7 @@ pipeline {
                 sh "echo test1 2"
                 sh "echo test3 3"
                 sh "echo test4"
-                sh "exit 1"
+                sh "exit 0"
             }
         }
     }
