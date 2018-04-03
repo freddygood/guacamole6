@@ -17,6 +17,7 @@ pipeline {
                 sh "echo test1 2"
                 sh "echo test3 3"
                 sh "echo test4"
+                sh "exit 1"
             }
         }
     }
@@ -42,10 +43,6 @@ def updateGithubCommitStatus(build = currentBuild) {
   // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
   repoUrl = getRepoURL()
   commitSha = getCommitSha()
-
-  echo "repoUrl: " + repoUrl
-  echo "commitSha: " + commitSha
-  echo "build_description: " + build.description
 
   step([
     $class: 'GitHubCommitStatusSetter',
