@@ -25,7 +25,7 @@ pipeline {
             //     }
             // }
             steps {
-                echo "Found inventory ${getStage}"
+                echo "Found inventory ${getStageToDeploy()}"
                 sh "printenv"
             }
         }
@@ -98,21 +98,43 @@ def updateGithubCommitStatus(build = currentBuild) {
 }
 
 
-def getStage(String branch = env.BRANCH_NAME) {
-  def stageToBranchMap = [:]
+def getStageToDeploy(String branch = env.BRANCH_NAME) {
   def stage = null
-  def file = "stageToBranchMap.groovy"
+  def fileName = "stageToBranchMap.groovy"
   def exists = fileExists file
 
   if (exists) {
-    load file
-    stage = stageToBranchMap.find { it.value == branch }?.key
-    if (stage) {
-      echo "Found inventory ${stage} for branch ${branch}"
-    } else {
-      echo "Not found inventories for branch ${branch}"
+    def stageToBranchMap = readYaml file: fileName
+    for (k in stageToBranchMap) {
+      if (k.value == branch) {
+        stage = k.key
+        break
+      }
     }
   }
 
+  if (stage) {
+    echo "Found inventory '${stage}' for branch '${branch}'"
+  } else {
+    echo "Not found inventories for branch '${branch}'"
+  }
+
   return stage
+
+  // def stageToBranchMap = [:]
+  // def stage = null
+  // def file = "stageToBranchMap.groovy"
+  // def exists = fileExists file
+
+  // if (exists) {
+  //   load file
+  //   stage = stageToBranchMap.find { it.value == branch }?.key
+  //   if (stage) {
+  //     echo "Found inventory ${stage} for branch ${branch}"
+  //   } else {
+  //     echo "Not found inventories for branch ${branch}"
+  //   }
+  // }
+
+  // return stage
 }
