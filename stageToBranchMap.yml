@@ -1,0 +1,8 @@
+#
+# map stage name to branch
+#
+
+dev: master
+dev2: test1
+demo: test3
+test: master
