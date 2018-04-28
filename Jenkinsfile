@@ -10,14 +10,49 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Prepare') {
             steps {
-                sh "uname -a"
-                sh "echo test1"
-                sh "echo test1 2"
-                sh "echo test3 3"
-                sh "echo test4"
-                sh "exit 0"
+                sh "printenv"
+            }
+        }
+        stage('Select branch') {
+            when {
+                anyOf {
+                    branch 'master'
+                    branch 'test1'
+                    branch 'test3'
+                }
+            }
+            steps {
+                sh "printenv"
+            }
+        }
+        stage('Build') {
+            parallel {
+                stage ('production') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                      echo "build ${BRANCH_NAME} to production"
+                    }
+                }
+                stage ('dev') {
+                    when {
+                        branch 'test1'
+                    }
+                    steps {
+                      echo "build ${BRANCH_NAME} to dev"
+                    }
+                }
+                stage ('dev1') {
+                    when {
+                        branch 'test2'
+                    }
+                    steps {
+                      echo "build ${BRANCH_NAME} to dev2"
+                    }
+                }
             }
         }
     }
