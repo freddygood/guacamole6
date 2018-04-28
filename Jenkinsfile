@@ -17,12 +17,13 @@ pipeline {
                 sh "printenv"
             }
         }
+
         stage('Select branch') {
-            when {
-                expression {
-                    return { getStage() }
-                }
-            }
+            // when {
+            //     expression {
+            //         return { getStage() }
+            //     }
+            // }
             steps {
                 echo "Found inventory ${getStage}"
                 sh "printenv"
