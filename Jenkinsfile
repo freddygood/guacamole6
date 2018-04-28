@@ -99,7 +99,7 @@ def updateGithubCommitStatus(build = currentBuild) {
 @NonCPS
 def getInventory(String branch = env.BRANCH_NAME) {
   def inventory = null
-  def fileName = "branchToInventoryMap.yml"
+  // def fileName = "branchToInventoryMap.yml"
 
   // // if ( fileExists(fileName) ) {
   // def branchToInventoryMap = readYaml file: fileName
