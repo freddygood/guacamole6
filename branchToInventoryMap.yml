@@ -1,0 +1,7 @@
+---
+
+master: inventories/dev
+test1: inventories/dev2
+test3:
+  - inventories/demo
+  - inventories/test
