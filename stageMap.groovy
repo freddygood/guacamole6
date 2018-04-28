@@ -4,6 +4,6 @@
 
 def stageMap[:]
 
-stageMap.dev = 'master'
-stageMap.dev2 = 'test1'
-stageMap.demo = 'test3'
+stageMap.put('dev', 'master')
+stageMap.put('dev2', 'test1')
+stageMap.put('demo', 'test3')
