@@ -103,7 +103,8 @@ def getStageToDeploy(String branch = env.BRANCH_NAME) {
 
   // if ( fileExists(fileName) ) {
   def stageToBranchMap = readYaml file: fileName
-  stage = stageToBranchMap.find { it.value == branch }?.key
+  println stageToBranchMap
+  stage = stageToBranchMap['inventory'].find { it.value == branch }?.key
   // }
 
   echo "Found inventory '${stage}' for branch '${branch}'"

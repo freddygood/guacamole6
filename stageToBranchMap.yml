@@ -2,7 +2,9 @@
 # map stage name to branch
 #
 
-dev: master
-dev2: test1
-demo: test3
-test: master
+inventory:
+  master: inventories/dev
+  test1: inventories/dev2
+  test3:
+    - inventories/demo
+    - inventories/test
