@@ -101,7 +101,7 @@ def updateGithubCommitStatus(build = currentBuild) {
 def getStageToDeploy(String branch = env.BRANCH_NAME) {
   def stage = null
   def fileName = "stageToBranchMap.groovy"
-  def exists = fileExists file
+  def exists = fileExists fileName
 
   if (exists) {
     def stageToBranchMap = readYaml file: fileName
