@@ -97,7 +97,7 @@ def updateGithubCommitStatus(build = currentBuild) {
   ])
 }
 
-
+@NonCPS
 def getStageToDeploy(String branch = env.BRANCH_NAME) {
   def stage = null
   def fileName = "stageToBranchMap.groovy"
