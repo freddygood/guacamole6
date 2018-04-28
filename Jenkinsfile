@@ -100,9 +100,8 @@ def updateGithubCommitStatus(build = currentBuild) {
 def getStageToDeploy(String branch = env.BRANCH_NAME) {
   def stage = null
   def fileName = "stageToBranchMap.yml"
-  def exists = fileExists fileName
 
-  if (exists) {
+  if ( fileExists(fileName) ) {
     def stageToBranchMap = readYaml file: fileName
     stage = stageToBranchMap.find { it.value == branch }?.key
   }
