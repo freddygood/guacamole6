@@ -25,7 +25,7 @@ pipeline {
             //     }
             // }
             steps {
-                echo "Found inventory ${getStageToDeploy()}"
+                echo "Found inventory '${getStageToDeploy()}' for branch '${env.BRANCH_NAME}'"
             }
         }
         // stage('Build') {
