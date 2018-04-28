@@ -1,6 +1,4 @@
-#
-# map stage name to branch
-#
+---
 
 inventory:
   master: inventories/dev
