@@ -26,7 +26,6 @@ pipeline {
             // }
             steps {
                 echo "Found inventory ${getStageToDeploy()}"
-                sh "printenv"
             }
         }
         // stage('Build') {
@@ -105,12 +104,7 @@ def getStageToDeploy(String branch = env.BRANCH_NAME) {
 
   if (exists) {
     def stageToBranchMap = readYaml file: fileName
-    for (k in stageToBranchMap) {
-      if (k.value == branch) {
-        stage = k.key
-        break
-      }
-    }
+    stage = stageToBranchMap.find { it.value == branch }?.key
   }
 
   if (stage) {
