@@ -107,6 +107,8 @@ def getStageToDeploy(String branch = env.BRANCH_NAME) {
     stage = stageToBranchMap.find { it.value == branch }?.key
   }
 
+  echo "Found inventory '${stage}' for branch '${branch}'"
+
   if (stage) {
     echo "Found inventory '${stage}' for branch '${branch}'"
   } else {
