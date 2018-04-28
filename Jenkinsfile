@@ -25,7 +25,7 @@ pipeline {
             //     }
             // }
             steps {
-                echo "Found inventory '${getStageToDeploy()}' for branch '${env.BRANCH_NAME}'"
+                echo "Found inventory '${getInventory()}' for branch '${env.BRANCH_NAME}'"
             }
         }
         // stage('Build') {
@@ -97,25 +97,25 @@ def updateGithubCommitStatus(build = currentBuild) {
 }
 
 @NonCPS
-def getStageToDeploy(String branch = env.BRANCH_NAME) {
-  def stage = null
+def getInventory(String branch = env.BRANCH_NAME) {
+  def inventory = null
   def fileName = "stageToBranchMap.yml"
 
   // if ( fileExists(fileName) ) {
-  def stageToBranchMap = readYaml file: fileName
-  println stageToBranchMap
-  stage = stageToBranchMap['inventory'].find { it.value == branch }?.key
+  def inventoryToBranchMap = readYaml file: fileName
+  println inventoryToBranchMap
+  inventory = inventoryToBranchMap.inventory.branch
   // }
 
-  echo "Found inventory '${stage}' for branch '${branch}'"
+  echo "Found inventory '${inventory}' for branch '${branch}'"
 
-  if (stage) {
-    echo "Found inventory '${stage}' for branch '${branch}'"
+  if (inventory) {
+    echo "Found inventory '${inventory}' for branch '${branch}'"
   } else {
     echo "Not found inventories for branch '${branch}'"
   }
 
-  return stage
+  return inventory
 
   // def stageToBranchMap = [:]
   // def stage = null
