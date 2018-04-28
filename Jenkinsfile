@@ -13,6 +13,8 @@ pipeline {
         stage('Prepare') {
             steps {
                 sh "printenv"
+                load "stageMap.groovy"
+                echo stageMap
             }
         }
         stage('Select branch') {
