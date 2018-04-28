@@ -96,7 +96,6 @@ def updateGithubCommitStatus(build = currentBuild) {
   ])
 }
 
-
 def getStage(String branch = env.BRANCH_NAME) {
   def stageToBranchMap = [:]
   def stage = null
