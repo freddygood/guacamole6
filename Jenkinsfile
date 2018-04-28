@@ -101,10 +101,10 @@ def getStageToDeploy(String branch = env.BRANCH_NAME) {
   def stage = null
   def fileName = "stageToBranchMap.yml"
 
-  if ( fileExists(fileName) ) {
-    def stageToBranchMap = readYaml file: fileName
-    stage = stageToBranchMap.find { it.value == branch }?.key
-  }
+  // if ( fileExists(fileName) ) {
+  def stageToBranchMap = readYaml file: fileName
+  stage = stageToBranchMap.find { it.value == branch }?.key
+  // }
 
   echo "Found inventory '${stage}' for branch '${branch}'"
 
