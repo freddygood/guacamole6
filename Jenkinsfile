@@ -95,7 +95,7 @@ def updateGithubCommitStatus(build = currentBuild) {
 }
 
 def getStage(String branch = env.BRANCH_NAME) {
-  def stageToBranchMap[:]
+  def stageToBranchMap = [:]
   load "stageToBranchMap.groovy"
   def stage = stageToBranchMap.find { it.value == branch }?.key
   if (stage) {
