@@ -101,36 +101,38 @@ def getInventory(String branch = env.BRANCH_NAME) {
   def inventory = null
   def fileName = "branchToInventoryMap.yml"
 
-  // if ( fileExists(fileName) ) {
-  def branchToInventoryMap = readYaml file: fileName
-  println branchToInventoryMap
-  inventory = branchToInventoryMap.branch
+  // // if ( fileExists(fileName) ) {
+  // def branchToInventoryMap = readYaml file: fileName
+  // println branchToInventoryMap
+  // inventory = branchToInventoryMap.branch
+  // // }
+
+  // echo "Found inventory '${inventory}' for branch '${branch}'"
+
+  // if (inventory) {
+  //   echo "Found inventory '${inventory}' for branch '${branch}'"
+  // } else {
+  //   echo "Not found inventories for branch '${branch}'"
   // }
 
-  echo "Found inventory '${inventory}' for branch '${branch}'"
+  // return inventory
+
+  def fileName = "branchToInventoryMap.groovy"
+  def branchToInventoryMap = [:]
+
+  // if (exists) {
+  load fileName
+
+  println branchToInventoryMap
+
+  inventory = branchToInventoryMap['branch']
 
   if (inventory) {
     echo "Found inventory '${inventory}' for branch '${branch}'"
   } else {
     echo "Not found inventories for branch '${branch}'"
   }
-
-  return inventory
-
-  // def stageToBranchMap = [:]
-  // def stage = null
-  // def file = "stageToBranchMap.groovy"
-  // def exists = fileExists file
-
-  // if (exists) {
-  //   load file
-  //   stage = stageToBranchMap.find { it.value == branch }?.key
-  //   if (stage) {
-  //     echo "Found inventory ${stage} for branch ${branch}"
-  //   } else {
-  //     echo "Not found inventories for branch ${branch}"
-  //   }
   // }
 
-  // return stage
+  return inventory
 }
