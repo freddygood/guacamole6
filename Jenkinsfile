@@ -96,13 +96,15 @@ def updateGithubCommitStatus(build = currentBuild) {
   ])
 }
 
+def getInventory() {
+  readYaml file: "stageToBranchMap.yml"
+}
+
 @NonCPS
-def getInventory(String branch = env.BRANCH_NAME) {
+def getInventoryByBranch(String branch = env.BRANCH_NAME) {
   def inventory = null
-  def fileName = "stageToBranchMap.yml"
 
   // if ( fileExists(fileName) ) {
-  def inventoryToBranchMap = readYaml file: fileName
   println inventoryToBranchMap
   inventory = inventoryToBranchMap.inventory.branch
   // }
