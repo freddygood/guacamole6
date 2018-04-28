@@ -1,6 +1,8 @@
 
 pipeline {
-    agent any
+    agent {
+        label 'master'
+    }
 
     options {
         disableConcurrentBuilds()
@@ -17,44 +19,43 @@ pipeline {
         }
         stage('Select branch') {
             when {
-                anyOf {
-                    branch 'master'
-                    branch 'test1'
-                    branch 'test3'
+                expression {
+                    return { getStage() }
                 }
             }
             steps {
+                echo "Found inventory ${getStage}"
                 sh "printenv"
             }
         }
-        stage('Build') {
-            parallel {
-                stage ('production') {
-                    when {
-                        branch 'master'
-                    }
-                    steps {
-                      echo "build ${BRANCH_NAME} to production"
-                    }
-                }
-                stage ('dev') {
-                    when {
-                        branch 'test1'
-                    }
-                    steps {
-                      echo "build ${BRANCH_NAME} to dev"
-                    }
-                }
-                stage ('dev1') {
-                    when {
-                        branch 'test2'
-                    }
-                    steps {
-                      echo "build ${BRANCH_NAME} to dev2"
-                    }
-                }
-            }
-        }
+        // stage('Build') {
+        //     parallel {
+        //         stage ('production') {
+        //             when {
+        //                 branch 'master'
+        //             }
+        //             steps {
+        //               echo "build ${BRANCH_NAME} to production"
+        //             }
+        //         }
+        //         stage ('dev') {
+        //             when {
+        //                 branch 'test1'
+        //             }
+        //             steps {
+        //               echo "build ${BRANCH_NAME} to dev"
+        //             }
+        //         }
+        //         stage ('dev1') {
+        //             when {
+        //                 branch 'test2'
+        //             }
+        //             steps {
+        //               echo "build ${BRANCH_NAME} to dev2"
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     post {
@@ -93,4 +94,24 @@ def updateGithubCommitStatus(build = currentBuild) {
       ]
     ]
   ])
+}
+
+
+def getStage(String branch = env.BRANCH_NAME) {
+  def stageToBranchMap = [:]
+  def stage = null
+  def file = "stageToBranchMap.groovy"
+  def exists = fileExists file
+
+  if (exists) {
+    load file
+    stage = stageToBranchMap.find { it.value == branch }?.key
+    if (stage) {
+      echo "Found inventory ${stage} for branch ${branch}"
+    } else {
+      echo "Not found inventories for branch ${branch}"
+    }
+  }
+
+  return stage
 }
