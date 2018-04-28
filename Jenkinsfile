@@ -97,21 +97,21 @@ def updateGithubCommitStatus(build = currentBuild) {
   ])
 }
 
-def getStage(String branch = env.BRANCH_NAME) {
-  def stageToBranchMap = [:]
-  def stage = null
-  def file = "stageToBranchMap.groovy"
-  def exists = fileExists file
+// def getStage(String branch = env.BRANCH_NAME) {
+//   def stageToBranchMap = [:]
+//   def stage = null
+//   def file = "stageToBranchMap.groovy"
+//   def exists = fileExists file
 
-  if (exists) {
-    load file
-    stage = stageToBranchMap.find { it.value == branch }?.key
-    if (stage) {
-      echo "Found inventory ${stage} for branch ${branch}"
-    } else {
-      echo "Not found inventories for branch ${branch}"
-    }
-  }
+//   if (exists) {
+//     load file
+//     stage = stageToBranchMap.find { it.value == branch }?.key
+//     if (stage) {
+//       echo "Found inventory ${stage} for branch ${branch}"
+//     } else {
+//       echo "Not found inventories for branch ${branch}"
+//     }
+//   }
 
-  return stage
-}
+//   return stage
+// }
