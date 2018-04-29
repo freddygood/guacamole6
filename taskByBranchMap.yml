@@ -1,0 +1,8 @@
+---
+
+branches:
+  master:
+    - mp30-ui-deploy
+    - mp30-dev-ui-deploy
+  test1: mp30-dev-ui-deploy
+  test3: mp30-demo-ui-deploy

@@ -97,15 +97,19 @@ def updateGithubCommitStatus(build = currentBuild) {
 }
 
 @NonCPS
-def getInventory(String branch = env.BRANCH_NAME) {
-  def inventory = null
-  // def fileName = "branchToInventoryMap.yml"
+def getTaskByBranch(String branch = env.BRANCH_NAME) {
+  def mapping = []
+  def fileName = "./taskByBranchMap.yml"
 
-  // // if ( fileExists(fileName) ) {
-  // def branchToInventoryMap = readYaml file: fileName
-  // println branchToInventoryMap
-  // inventory = branchToInventoryMap.branch
-  // // }
+  if ( fileExists(fileName) ) {
+    mapping = readYaml file: fileName
+  }
+
+  println "mapping => ${mapping}"
+
+  def task = mapping.branches.branch
+
+  println "branch => ${branch}"
 
   // echo "Found inventory '${inventory}' for branch '${branch}'"
 
@@ -117,22 +121,6 @@ def getInventory(String branch = env.BRANCH_NAME) {
 
   // return inventory
 
-  def fileName = "branchToInventoryMap.groovy"
-  def branchToInventoryMap = [:]
 
-  // if (exists) {
-  load fileName
-
-  println branchToInventoryMap
-
-  inventory = branchToInventoryMap['branch']
-
-  if (inventory) {
-    echo "Found inventory '${inventory}' for branch '${branch}'"
-  } else {
-    echo "Not found inventories for branch '${branch}'"
-  }
-  // }
-
-  return inventory
+  return branch
 }
