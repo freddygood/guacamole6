@@ -25,7 +25,7 @@ pipeline {
             //     }
             // }
             steps {
-                echo "Found inventory '${getInventory()}' for branch '${env.BRANCH_NAME}'"
+                echo "Found inventory '${getTaskByBranch()}' for branch '${env.BRANCH_NAME}'"
             }
         }
         // stage('Build') {
