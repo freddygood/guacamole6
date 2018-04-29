@@ -102,8 +102,9 @@ def getTaskByBranch(String branch = env.BRANCH_NAME) {
   def fileName = "./taskByBranchMap.yml"
 
   echo "fileName: ${fileName}"
+  def e = fileExists(fileName)
 
-  if ( fileExists(fileName) ) {
+  if (e) {
     mapping = readYaml file: fileName
   }
 
