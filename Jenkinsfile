@@ -9,6 +9,7 @@ pipeline {
 
     environment {
         TASK_BY_BRANCH_MAP_FILE_NAME = './taskByBranchMap.yml'
+        TASK_TO_EXCLUDE = 'mp30-ui-deploy'
     }
 
     options {
@@ -39,9 +40,13 @@ pipeline {
                 script {
                     def builds = [:]
                     for (t in env.TASKS.split(',')) {
-                        builds[t] = {
-                            node {
-                                echo "Starting the task '${t}' on branch '${env.BRANCH_NAME}'"
+                        if (t in TASK_TO_EXCLUDE.split(',')) {
+                            echo "Task '${t}' is excluded"
+                        } else {
+                            builds[t] = {
+                                node {
+                                    echo "Starting the task '${t}' on branch '${env.BRANCH_NAME}'"
+                                }
                             }
                         }
                     }
