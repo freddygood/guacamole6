@@ -32,7 +32,6 @@ pipeline {
                     branches: [[name: PROFILES_GIT_BRANCH]],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [
-                        [$class: 'PathRestriction', includedRegions: MAPPING_FILE_NAME],
                         [$class: 'RelativeTargetDirectory', relativeTargetDir: PROFILES_DIR],
                         [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: true]
                     ],
@@ -42,6 +41,8 @@ pipeline {
                         url: PROFILES_GIT_REPO
                     ]]
                 ])
+
+                sh "find ${env.PROFILES_DIR} -maxdepth 1 -mindepth 1 ! -name mapping | xargs -n1000 rm -rf"
 
                 script {
                     def mapping = []
