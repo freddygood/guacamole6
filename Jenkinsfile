@@ -28,7 +28,6 @@ pipeline {
                         mapping = readYaml file: env.TASK_BY_BRANCH_MAP_FILE_NAME
                     }
                     println "Got task by branch mapping => ${mapping}"
-                    // env.TASKS = mapping.branches[env.BRANCH_NAME].join(',')
                     env.TASKS = mapping.tasks.findAll { it.value == env.BRANCH_NAME }.keySet().join(',')
 
                 }
@@ -45,16 +44,14 @@ pipeline {
                         if (task in env.TASK_TO_EXCLUDE.split(',')) {
                             echo "Task '${task}' is excluded. Skipping.."
                         } else {
+                            echo "Task '${task}' is scheduled on '${env.BRANCH_NAME}'."
                             builds[task] = {
                                 echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
-                                echo "Processing.."
                                 build job: task, parameters: [ string(name: 'BRANCH', value: env.BRANCH_NAME) ]
                             }
                         }
                     }
-
                     println "Got run build tasks => ${builds.keySet()}"
-
                     parallel(builds)
                 }
             }
