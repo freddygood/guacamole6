@@ -36,7 +36,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "printenv"
                 script {
                     def builds = [:]
                     for (task in env.TASKS.split(',')) {
@@ -46,8 +45,9 @@ pipeline {
                             builds[task] = {
                                 node {
                                     echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
+                                    echo "Processing.."
                                     build
-                                        job: task,
+                                        job: "${task}",
                                         parameters: [
                                             [string(name: 'BRANCH', value: env.BRANCH_NAME)]
                                         ]
