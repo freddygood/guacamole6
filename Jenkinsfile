@@ -24,8 +24,8 @@ pipeline {
             steps {
                 script {
                     def mapping = []
-                    if (fileExists(TASK_BY_BRANCH_MAP_FILE_NAME)) {
-                        mapping = readYaml file: TASK_BY_BRANCH_MAP_FILE_NAME
+                    if (fileExists(env.TASK_BY_BRANCH_MAP_FILE_NAME)) {
+                        mapping = readYaml file: env.TASK_BY_BRANCH_MAP_FILE_NAME
                     }
                     println "Got task by branch mapping => ${mapping}"
                     // env.TASKS = mapping.branches[env.BRANCH_NAME].join(',')
@@ -41,12 +41,13 @@ pipeline {
                 script {
                     def builds = [:]
                     for (task in env.TASKS.split(',')) {
-                        if (task in TASK_TO_EXCLUDE.split(',')) {
+                        echo "Processing task '${task}'"
+                        if (task in env.TASK_TO_EXCLUDE.split(',')) {
                             echo "Task '${task}' is excluded. Skipping.."
                         } else {
                             builds[task] = {
                                 node {
-                                    echo "Starting the task '${task}'"
+                                    echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
                                 }
                             }
                         }
