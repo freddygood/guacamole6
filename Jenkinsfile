@@ -39,20 +39,26 @@ pipeline {
                 sh "printenv"
                 script {
                     def builds = [:]
-                    for (t in env.TASKS.split(',')) {
-                        if (t in TASK_TO_EXCLUDE.split(',')) {
-                            echo "Task '${t}' is excluded"
+                    for (task in env.TASKS.split(',')) {
+                        if (task in TASK_TO_EXCLUDE.split(',')) {
+                            echo "Task '${task}' is excluded. Skipping.."
                         } else {
-                            builds[t] = {
+                            builds[task] = {
                                 node {
-                                    echo "Starting the task '${t}' on branch '${env.BRANCH_NAME}'"
+                                    echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
+                                    build
+                                        job: task,
+                                        parameters: [
+                                            [string(name: 'BRANCH', value: env.BRANCH_NAME)]
+                                        ]
                                 }
                             }
                         }
                     }
+
                     println "Got run build tasks => ${builds}"
 
-                    parallel(builds)
+                    // parallel(builds)
                 }
             }
         }
