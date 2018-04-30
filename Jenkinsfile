@@ -33,7 +33,7 @@ pipeline {
                       mapping = readYaml file: fileName
                     }
                     println "mapping => ${mapping}"
-                    env.TASK = mapping.branches[branch]
+                    env.TASK = mapping.branches[env.BRANCH_NAME]
                     println "branch => ${env.TASK}"
                 }
                 echo "Found task '${env.TASK}' for branch '${env.BRANCH_NAME}'"
