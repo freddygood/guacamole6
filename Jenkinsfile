@@ -8,8 +8,13 @@ pipeline {
     }
 
     environment {
-        TASK_BY_BRANCH_MAP_FILE_NAME = './taskByBranchMap.yml'
-        TASK_TO_EXCLUDE = 'mp30-ui-deploy'
+        MAPPING_FILE_NAME = 'mapping/mp30/ui-mapping.yml'
+        TASKS_TO_EXCLUDE = 'mp30-ui-deploy'
+
+        PROFILES_DIR = 'profiles'
+        PROFILES_GIT_REPO='git@github.com:media20/profiles.git'
+        PROFILES_GIT_BRANCH = "master"
+        PROFILES_GIT_CREDENTIALS_ID='d335f9d6-8f0a-48b6-8415-6f0384db0121'
     }
 
     options {
@@ -22,14 +27,29 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: PROFILES_GIT_BRANCH]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                        [$class: 'PathRestriction', includedRegions: MAPPING_FILE_NAME],
+                        [$class: 'RelativeTargetDirectory', relativeTargetDir: PROFILES_DIR],
+                        [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: true]
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[
+                        credentialsId: PROFILES_GIT_CREDENTIALS_ID,
+                        url: PROFILES_GIT_REPO
+                    ]]
+                ])
+
                 script {
                     def mapping = []
-                    if (fileExists(env.TASK_BY_BRANCH_MAP_FILE_NAME)) {
-                        mapping = readYaml file: env.TASK_BY_BRANCH_MAP_FILE_NAME
+                    if (fileExists( "${env.PROFILES_DIR}/${env.MAPPING_FILE_NAME}" )) {
+                        mapping = readYaml file: "${env.PROFILES_DIR}/${env.MAPPING_FILE_NAME}"
                     }
                     println "Got task by branch mapping => ${mapping}"
                     env.TASKS = mapping.tasks.findAll { it.value == env.BRANCH_NAME }.keySet().join(',')
-
                 }
                 echo "Found tasks '${env.TASKS}' for branch '${env.BRANCH_NAME}'"
             }
@@ -41,7 +61,7 @@ pipeline {
                     def builds = [:]
                     for (task in env.TASKS.split(',')) {
                         echo "Processing task '${task}'"
-                        if (task in env.TASK_TO_EXCLUDE.split(',')) {
+                        if (task in env.TASKS_TO_EXCLUDE.split(',')) {
                             echo "Task '${task}' is excluded. Skipping.."
                         } else {
                             echo "Task '${task}' is scheduled on '${env.BRANCH_NAME}'."
