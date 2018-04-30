@@ -1,8 +1,15 @@
 ---
 
-branches:
-  master:
-    - mp30-ui-deploy
-    - mp30-dev-ui-deploy
-  test1: mp30-dev-ui-deploy
-  test3: mp30-demo-ui-deploy
+# branches:
+#   master:
+#     - mp30-ui-deploy
+#     - mp30-dev-ui-deploy
+#   "rc.7": "mp30-dev2-ui-deploy"
+#   "#431": "mp30-demo-ui-deploy"
+
+tasks:
+  mp30-ui-deploy: 'master'
+  mp30-demo-ui-deploy: 'master'
+  mp30-dev-ui-deploy: '#431'
+  mp30-dev2-ui-deploy: 'rc.7'
+  mp30-test-ui-deploy: 'rc.7'
