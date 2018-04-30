@@ -25,7 +25,21 @@ pipeline {
             //     }
             // }
             steps {
-                echo "Found inventory '${getTaskByBranch()}' for branch '${env.BRANCH_NAME}'"
+                script {
+                    def mapping = []
+                    def fileName = "./taskByBranchMap.yml"
+                    println "fileName: ${fileName}"
+                    if (fileExists(fileName)) {
+                      mapping = readYaml file: fileName
+                    }
+                    println "mapping => ${mapping}"
+                    def env.TASK = mapping.branches[branch]
+                    println "branch => ${env.TASK}"
+                    def task = mapping.branches[branch]
+                    println "branch => ${task}"
+                }
+                echo "Found task '${env.TASK}' for branch '${env.BRANCH_NAME}'"
+                echo "Found task '${task}' for branch '${env.BRANCH_NAME}'"
             }
         }
         // stage('Build') {
@@ -94,36 +108,4 @@ def updateGithubCommitStatus(build = currentBuild) {
       ]
     ]
   ])
-}
-
-@NonCPS
-def getTaskByBranch(String branch = env.BRANCH_NAME) {
-  def mapping = []
-  def fileName = "./taskByBranchMap.yml"
-
-  echo "fileName: ${fileName}"
-  def e = fileExists(fileName)
-
-  if (e) {
-    mapping = readYaml file: fileName
-  }
-
-  println "mapping => ${mapping}"
-
-  def task = mapping.branches.branch
-
-  println "branch => ${branch}"
-
-  // echo "Found inventory '${inventory}' for branch '${branch}'"
-
-  // if (inventory) {
-  //   echo "Found inventory '${inventory}' for branch '${branch}'"
-  // } else {
-  //   echo "Not found inventories for branch '${branch}'"
-  // }
-
-  // return inventory
-
-
-  return branch
 }
