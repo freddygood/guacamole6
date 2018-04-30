@@ -28,7 +28,9 @@ pipeline {
                         mapping = readYaml file: TASK_BY_BRANCH_MAP_FILE_NAME
                     }
                     println "Got task by branch mapping => ${mapping}"
-                    env.TASKS = mapping.branches[env.BRANCH_NAME].join(',')
+                    // env.TASKS = mapping.branches[env.BRANCH_NAME].join(',')
+                    env.TASKS = mapping.tasks.findAll { it.value == env.BRANCH_NAME }.keySet().join(',')
+
                 }
                 echo "Found tasks '${env.TASKS}' for branch '${env.BRANCH_NAME}'"
             }
