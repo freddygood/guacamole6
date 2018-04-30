@@ -12,4 +12,4 @@ tasks:
   mp30-demo-ui-deploy: 'master'
   mp30-dev-ui-deploy: '#431'
   mp30-dev2-ui-deploy: 'rc.7'
-  mp30-test-ui-deploy: 'rc.7'
+  mp30-test-ui-deploy: 'master'
