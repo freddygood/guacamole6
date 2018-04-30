@@ -39,7 +39,11 @@ pipeline {
                 script {
                     def builds = [:]
                     for (t in env.TASKS.split(',')) {
-                        builds[t] = "echo \"Starting the task '${t}' on branch '${env.BRANCH_NAME}'\""
+                        builds[t] = {
+                            node {
+                                echo "Starting the task '${t}' on branch '${env.BRANCH_NAME}'"
+                            }
+                        }
                     }
                     println "Got run build tasks => ${builds}"
 
