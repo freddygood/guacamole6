@@ -46,11 +46,6 @@ pipeline {
                                 node {
                                     echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
                                     echo "Processing.."
-                                    build
-                                        job: "${task}",
-                                        parameters: [
-                                            [string(name: 'BRANCH', value: env.BRANCH_NAME)]
-                                        ]
                                 }
                             }
                         }
