@@ -37,13 +37,13 @@ pipeline {
             steps {
                 sh "printenv"
                 script {
-                    def runBuild = []
+                    def builds = [:]
                     for (t in env.TASKS.split(',')) {
-                        runBuild.add("echo \"Starting the task '${t}'\"")
+                        builds[t] = "echo \"Starting the task '${t}' on branch '${env.BRANCH_NAME}'\""
                     }
-                    println "Got run build tasks => ${runBuild}"
+                    println "Got run build tasks => ${builds}"
 
-                    parallel(runBuild)
+                    parallel(builds)
                 }
             }
         }
