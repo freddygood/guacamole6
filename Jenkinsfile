@@ -47,7 +47,6 @@ pipeline {
                             builds[task] = {
                                 node {
                                     echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
-                                    echo "Processing.."
                                 }
                             }
                         }
