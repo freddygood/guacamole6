@@ -27,7 +27,7 @@ pipeline {
                         mapping = readYaml file: TASK_BY_BRANCH_MAP_FILE_NAME
                     }
                     println "Got task by branch mapping => ${mapping}"
-                    env.TASKS = mapping.branches[env.BRANCH_NAME]
+                    env.TASKS = mapping.branches[env.BRANCH_NAME].join(',')
                 }
                 echo "Found tasks '${env.TASKS}' for branch '${env.BRANCH_NAME}'"
             }
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 sh "printenv"
                 script {
-                    for (t in env.TASKS) {
+                    for (t in env.TASKS.split(',')) {
                         echo "I would start the task ${t}"
                     }
                 }
