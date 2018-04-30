@@ -45,10 +45,12 @@ pipeline {
 
                 script {
                     def mapping = []
-                    if (fileExists( "${env.PROFILES_DIR}/${env.MAPPING_FILE_NAME}" )) {
-                        mapping = readYaml file: "${env.PROFILES_DIR}/${env.MAPPING_FILE_NAME}"
+                    def mappingFileName = "${env.PROFILES_DIR}/${env.MAPPING_FILE_NAME}"
+                    echo "Reading mapping file ${mappingFileName}"
+                    if (fileExists( mappingFileName )) {
+                        mapping = readYaml file: mappingFileName
                     }
-                    println "Got task by branch mapping => ${mapping}"
+                    echo "Got task by branch mapping => ${mapping}"
                     env.TASKS = mapping.tasks.findAll { it.value == env.BRANCH_NAME }.keySet().join(',')
                 }
                 echo "Found tasks '${env.TASKS}' for branch '${env.BRANCH_NAME}'"
@@ -71,7 +73,7 @@ pipeline {
                             }
                         }
                     }
-                    println "Got run build tasks => ${builds.keySet()}"
+                    echo "Got run build tasks => ${builds.keySet()}"
                     parallel(builds)
                 }
             }
