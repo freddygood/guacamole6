@@ -53,7 +53,7 @@ pipeline {
                         }
                     }
 
-                    println "Got run build tasks => ${builds}"
+                    println "Got run build tasks => ${builds.keySet()}"
 
                     // parallel(builds)
                 }
