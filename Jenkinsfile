@@ -46,9 +46,8 @@ pipeline {
                             echo "Task '${task}' is excluded. Skipping.."
                         } else {
                             builds[task] = {
-                                node {
-                                    echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
-                                }
+                                echo "Starting the task '${task}' on branch '${env.BRANCH_NAME}'"
+                                echo "Processing.."
                             }
                         }
                     }
